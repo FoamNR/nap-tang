@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/AuthService/">
+    <Project Path="src/Services/AuthService/EasyTrack.AuthService.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/MediaService/">
+    <Project Path="src/Services/MediaService/EasyTrack.MediaService.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/TransactionService/">
+    <Project Path="src/Services/TransactionService/EasyTrack.TransactionService.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/EasyTrack.Shared.csproj" />
+  </Folder>
+</Solution>

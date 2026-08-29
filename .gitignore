@@ -1,0 +1,80 @@
+# ====================================================================
+# EasyTrack Root .gitignore
+# Co-existing .NET Microservices, Nuxt Frontend, and Docker Setup
+# ====================================================================
+
+# --------------------------------------------------------------------
+# 1. Environment and Secrets (CRITICAL)
+# --------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.user
+*.userossc
+*.sln.docstates
+
+# --------------------------------------------------------------------
+# 2. .NET Backend / C#
+# --------------------------------------------------------------------
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Log]/
+
+# OS / Visual Studio / Rider / VS Code cache files
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userossc
+*.sln.docstates
+*.patch
+*.diff
+
+# Rider / Resharper
+*.sln.DotSettings.user
+.rider/
+
+# Publish / Package outputs
+*.placeholder
+*.nupkg
+absolute/
+
+# --------------------------------------------------------------------
+# 3. Node.js & Nuxt Frontend
+# --------------------------------------------------------------------
+# Dependencies
+frontend/node_modules/
+node_modules/
+
+# Nuxt / Vite / Nitro outputs
+frontend/.output/
+frontend/.nuxt/
+frontend/.nitro/
+frontend/.cache/
+frontend/dist/
+
+# Nuxt local configuration & logs
+frontend/logs/
+frontend/*.log
+frontend/.data/
+
+# --------------------------------------------------------------------
+# 4. Docker / Database / Storage Volumes
+# --------------------------------------------------------------------
+# Docker compose logs / local volumes (if mapped locally)
+.docker/
+docker-compose.override.yml
+*data/
+
+# --------------------------------------------------------------------
+# 5. OS and Common Temp Files
+# --------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.temp
+*.swp
+*.log

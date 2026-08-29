@@ -1,0 +1,6 @@
+@EasyTrack.MediaService_HostAddress = http://localhost:5182
+
+GET {{EasyTrack.MediaService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

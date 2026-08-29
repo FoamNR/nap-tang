@@ -1,0 +1,6 @@
+@EasyTrack.TransactionService_HostAddress = http://localhost:5210
+
+GET {{EasyTrack.TransactionService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

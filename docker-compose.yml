@@ -1,0 +1,109 @@
+services:
+  # Database
+  db:
+    image: postgres:16-alpine
+    container_name: easytrack-db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - easytrack-network
+
+  # Object Storage (S3-compatible)
+  object-storage:
+    image: minio/minio:latest
+    container_name: easytrack-minio
+    command: server /data --console-address ":${MINIO_CONSOLE_PORT}"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "${MINIO_API_PORT}:9000"
+      - "${MINIO_CONSOLE_PORT}:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - easytrack-network
+
+  # YARP API Gateway
+  # api-gateway:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile.Gateway
+  #   ports:
+  #     - "${GATEWAY_PORT}:8000"
+  #   depends_on:
+  #     - auth-service
+  #     - transaction-service
+  #     - media-service
+  #   networks:
+  #     - easytrack-network
+
+  # AuthService
+  # auth-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: src/Services/AuthService/Dockerfile
+  #   environment:
+  #     - ConnectionStrings__DefaultConnection=Host=db;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+  #     - Jwt__Secret=${JWT_SECRET}
+  #     - Jwt__Issuer=${JWT_ISSUER}
+  #     - Jwt__Audience=${JWT_AUDIENCE}
+  #     - Jwt__ExpiryMinutes=${JWT_EXPIRY_MINUTES}
+  #     - Jwt__RefreshExpiryDays=${JWT_REFRESH_EXPIRY_DAYS}
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - easytrack-network
+
+  # TransactionService
+  # transaction-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: src/Services/TransactionService/Dockerfile
+  #   environment:
+  #     - ConnectionStrings__DefaultConnection=Host=db;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+  #     - Jwt__Secret=${JWT_SECRET}
+  #     - Jwt__Issuer=${JWT_ISSUER}
+  #     - Jwt__Audience=${JWT_AUDIENCE}
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - easytrack-network
+
+  # MediaService
+  # media-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: src/Services/MediaService/Dockerfile
+  #   environment:
+  #     - Aws__ServiceUrl=http://object-storage:9000
+  #     - Aws__AccessKey=${MINIO_ROOT_USER}
+  #     - Aws__SecretKey=${MINIO_ROOT_PASSWORD}
+  #   depends_on:
+  #     - object-storage
+  #   networks:
+  #     - easytrack-network
+
+  # Nuxt Frontend
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "${FRONTEND_PORT}:3000"
+  #   networks:
+  #     - easytrack-network
+
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  easytrack-network:
+    driver: bridge
