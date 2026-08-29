@@ -65,8 +65,9 @@ export const useTransactionStore = defineStore('transactions', () => {
 
   const isAddModalOpen = ref(false)
 
-  const txUrl = 'http://localhost:8002/api/v1/transactions'
-  const mediaUrl = 'http://localhost:8003/api/v1/media'
+  const config = useRuntimeConfig()
+  const txUrl = config.public.transactionApiBase
+  const mediaUrl = config.public.mediaApiBase
 
   const headers = computed(() => ({
     Authorization: authStore.accessToken ? `Bearer ${authStore.accessToken}` : ''

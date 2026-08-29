@@ -50,11 +50,16 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Register CORS
+var allowedOriginsSetting = builder.Configuration["Cors:AllowedOrigins"] ?? builder.Configuration["Cors__AllowedOrigins"];
+var allowedOrigins = !string.IsNullOrEmpty(allowedOriginsSetting)
+    ? allowedOriginsSetting.Split(',', StringSplitOptions.RemoveEmptyEntries)
+    : new[] { "http://localhost:3000" };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();

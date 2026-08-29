@@ -10,7 +10,8 @@ export interface User {
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = useCookie<string | null>('accessToken', { default: () => null })
   const user = useCookie<User | null>('user', { default: () => null })
-  const authUrl = 'http://localhost:8001/api/v1/auth'
+  const config = useRuntimeConfig()
+  const authUrl = config.public.authApiBase
 
   const isAuthenticated = computed(() => !!accessToken.value)
 
