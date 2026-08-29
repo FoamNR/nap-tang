@@ -48,27 +48,32 @@ We use a single PostgreSQL instance with separate database schemas to ensure mic
 
 ## 4. Run & Development Commands
 To start/run the microservices and frontend web app:
-* **Databases & Storage (Docker):**
+* **Option A: Full Orchestration (Run everything in Docker):**
   ```bash
-  docker-compose up -d
+  docker-compose up --build -d
   ```
-* **AuthService:**
-  ```bash
-  dotnet run --project backend/src/Services/AuthService/EasyTrack.AuthService.csproj --launch-profile http
-  ```
-* **TransactionService:**
-  ```bash
-  dotnet run --project backend/src/Services/TransactionService/EasyTrack.TransactionService.csproj --launch-profile http
-  ```
-* **MediaService:**
-  ```bash
-  dotnet run --project backend/src/Services/MediaService/EasyTrack.MediaService.csproj --launch-profile http
-  ```
-* **Nuxt Frontend:**
-  ```bash
-  cd frontend
-  $env:NUXT_TELEMETRY_DISABLED=1; npm run dev
-  ```
+* **Option B: Hybrid Development (Run DBs in Docker, Services locally):**
+  * **Databases & Storage:**
+    ```bash
+    docker-compose up -d db object-storage
+    ```
+  * **AuthService:**
+    ```bash
+    dotnet run --project backend/src/Services/AuthService/EasyTrack.AuthService.csproj --launch-profile http
+    ```
+  * **TransactionService:**
+    ```bash
+    dotnet run --project backend/src/Services/TransactionService/EasyTrack.TransactionService.csproj --launch-profile http
+    ```
+  * **MediaService:**
+    ```bash
+    dotnet run --project backend/src/Services/MediaService/EasyTrack.MediaService.csproj --launch-profile http
+    ```
+  * **Nuxt Frontend:**
+    ```bash
+    cd frontend
+    $env:NUXT_TELEMETRY_DISABLED=1; npm run dev
+    ```
 
 ---
 
@@ -77,4 +82,11 @@ The user interface is styled using a custom, cute cartoon-inspired theme with a 
 * **Typography:** Google Fonts Fredoka (for bold, rounded headings) and Nunito (for readable body text).
 * **Color Palette:** Cotton candy gradient (from Sky Blue `#4EA8DE` to Rose Pink `#FF85A1`), background pastel blend (Alice Cream/Lavender blush), and bright accent markers.
 * **Component Styling:** Curved shapes (`rounded-3xl` / `rounded-[1.8rem]`), soft custom pink drop shadows, and active bouncy scale hover animations on buttons.
+
+---
+
+## 6. Git Branching Strategy
+We maintain separate environments using branches:
+* **`main` Branch:** Stores stable, production-ready code. Commits here represent live application state.
+* **`develop` Branch:** Active development branch. New features and hotfixes are merged here for testing before release.
 
