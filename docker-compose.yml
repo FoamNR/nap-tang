@@ -45,60 +45,66 @@ services:
   #     - easytrack-network
 
   # AuthService
-  # auth-service:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: src/Services/AuthService/Dockerfile
-  #   environment:
-  #     - ConnectionStrings__DefaultConnection=Host=db;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
-  #     - Jwt__Secret=${JWT_SECRET}
-  #     - Jwt__Issuer=${JWT_ISSUER}
-  #     - Jwt__Audience=${JWT_AUDIENCE}
-  #     - Jwt__ExpiryMinutes=${JWT_EXPIRY_MINUTES}
-  #     - Jwt__RefreshExpiryDays=${JWT_REFRESH_EXPIRY_DAYS}
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - easytrack-network
+  auth-service:
+    build:
+      context: ./backend
+      dockerfile: src/Services/AuthService/Dockerfile
+    ports:
+      - "${AUTH_SERVICE_PORT}:8001"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+      - Jwt__Secret=${JWT_SECRET}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+      - Jwt__ExpiryMinutes=${JWT_EXPIRY_MINUTES}
+      - Jwt__RefreshExpiryDays=${JWT_REFRESH_EXPIRY_DAYS}
+    depends_on:
+      - db
+    networks:
+      - easytrack-network
 
   # TransactionService
-  # transaction-service:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: src/Services/TransactionService/Dockerfile
-  #   environment:
-  #     - ConnectionStrings__DefaultConnection=Host=db;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
-  #     - Jwt__Secret=${JWT_SECRET}
-  #     - Jwt__Issuer=${JWT_ISSUER}
-  #     - Jwt__Audience=${JWT_AUDIENCE}
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - easytrack-network
+  transaction-service:
+    build:
+      context: ./backend
+      dockerfile: src/Services/TransactionService/Dockerfile
+    ports:
+      - "${TRANSACTION_SERVICE_PORT}:8002"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+      - Jwt__Secret=${JWT_SECRET}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+    depends_on:
+      - db
+    networks:
+      - easytrack-network
 
   # MediaService
-  # media-service:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: src/Services/MediaService/Dockerfile
-  #   environment:
-  #     - Aws__ServiceUrl=http://object-storage:9000
-  #     - Aws__AccessKey=${MINIO_ROOT_USER}
-  #     - Aws__SecretKey=${MINIO_ROOT_PASSWORD}
-  #   depends_on:
-  #     - object-storage
-  #   networks:
-  #     - easytrack-network
+  media-service:
+    build:
+      context: ./backend
+      dockerfile: src/Services/MediaService/Dockerfile
+    ports:
+      - "${MEDIA_SERVICE_PORT}:8003"
+    environment:
+      - Aws__ServiceUrl=http://object-storage:9000
+      - Aws__AccessKey=${MINIO_ROOT_USER}
+      - Aws__SecretKey=${MINIO_ROOT_PASSWORD}
+    depends_on:
+      - object-storage
+    networks:
+      - easytrack-network
 
   # Nuxt Frontend
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "${FRONTEND_PORT}:3000"
-  #   networks:
-  #     - easytrack-network
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    networks:
+      - easytrack-network
 
 volumes:
   postgres_data:
